@@ -9,6 +9,10 @@
     padding: 0;
 }
 
+.logo {
+    width: 100px;
+}
+
 
 nav {
     display: flex;
@@ -18,7 +22,6 @@ nav {
     align-items: center;
 
     & > img {
-        width: 100px;
         margin-right: auto;
     }
 
@@ -46,6 +49,11 @@ header {
     text-align: center;
     margin-top: 4rem;
     margin-bottom: 10rem;
+    padding: 0 3rem;
+
+    & > img {
+        margin: -5em 0;
+    }
 
     & > h1 {
         color: var(--main-color);
@@ -58,17 +66,11 @@ header {
         font-size: 1rem;
         margin-top: 15px;
     }
-
-    & > img {
-        max-width: 200px;
-        border-radius: 50%;
-        margin-top: 30px;
-    }
 }
 
 article {
-    padding: 50px;
     text-align: center;
+    padding: 3em;
 
     &:nth-of-type(1),
     &:nth-of-type(3){
@@ -80,12 +82,12 @@ article {
         color: #DF6C4F;
         font-weight: 800;
         font-size: 2rem;
+        margin-bottom: 1.5rem;
     }
 
     & > p {
         font-size: 1.2rem;
         font-weight: 400;
-        margin-top: 1.5rem;
     }
 
     & > ul {
@@ -96,5 +98,45 @@ article {
         }
     }
 
+    .works {
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+ 
+        .work {
+            width: 90%;
+            border-radius: 10px;
+        }
+    }
 }
+
+footer {
+    background-color: var(--accent-color);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 3em;
+    
+    & > p {
+        margin-top: 1em;
+    }
+
+    .contacts {
+        margin-top: 3em;
+        display: flex;
+        align-items: center;
+        gap: 2em;
+        
+        & > img {
+            border-radius: 50%;
+        }
+    }
+
+    
+}
+
+
+
 
