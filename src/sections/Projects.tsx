@@ -158,13 +158,13 @@ export const Projects: React.FC = () => {
 
   const y1 = useTransform(scrollYProgress, [0, 1], [0, -50]);
   
-  const y2 = useTransform(scrollYProgress, [0, 1], [100, -400]);
+  const y2 = useTransform(scrollYProgress, [0, 1], [400, -800]);
 
   const column1 = projectsData.filter((_, index) => index % 2 === 0);
   const column2 = projectsData.filter((_, index) => index % 2 !== 0);
 
   return (
-    <section id="projects" className="py-20 bg-zinc-950">
+    <section id="projects" className="py-20">
       <div className="container mx-auto px-6">
         <SectionTitle title="Projects" />
 

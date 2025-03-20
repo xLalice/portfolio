@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from "../components/Button";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 const contactFormSchema = z.object({
   name: z.string().min(3, "Name is required"),
@@ -15,14 +16,18 @@ const contactFormSchema = z.object({
 type ContactFormData = z.infer<typeof contactFormSchema>;
 
 export const Contact: React.FC = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-    reset
-  } = useForm<ContactFormData>({
+  const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm<ContactFormData>({
     resolver: zodResolver(contactFormSchema)
   });
+
+  const sectionRef = React.useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+  
+  const opacity = useTransform(scrollYProgress, [0, 0.2, 1], [0, 1, 1]);
+  const y = useTransform(scrollYProgress, [0, 0.3], [100, 0]);
 
   const onSubmit = async (data: ContactFormData) => {
     try {
@@ -42,27 +47,85 @@ export const Contact: React.FC = () => {
     }
   };
 
+  // Animation variants for child elements
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 10
+      }
+    }
+  };
+
+  const staggerChildrenVariants = {
+    hidden: { opacity: 0 },
+    visible: (i = 1) => ({
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.12,
+        delayChildren: 0.1 * i
+      }
+    })
+  };
+
+  const floatingParticleVariants = {
+    animate: (i: number) => ({
+      y: [0, -15, 0],
+      opacity: [0.3, 0.8, 0.3],
+      transition: {
+        y: {
+          repeat: Infinity,
+          duration: 3 + i * 0.5,
+          ease: "easeInOut"
+        },
+        opacity: {
+          repeat: Infinity,
+          duration: 3 + i * 0.5,
+          ease: "easeInOut"
+        }
+      }
+    })
+  };
+
   return (
-    <section id="contact" className="py-20 bg-zinc-950 relative">
+    <section id="contact" className="py-20 relative" ref={sectionRef}>
       <div className="absolute inset-0 overflow-hidden">
         {Array.from({ length: 20 }).map((_, index) => (
-          <div
+          <motion.div
             key={index}
             className="absolute w-1 h-1 bg-teal-500/30 rounded-full"
             style={{
               top: `${Math.random() * 100}%`,
               left: `${Math.random() * 100}%`,
-              opacity: Math.random() * 0.5 + 0.1,
             }}
+            variants={floatingParticleVariants}
+            custom={index}
+            animate="animate"
           />
         ))}
       </div>
       
-      <div className="container mx-auto px-6 relative z-10">
+      <motion.div 
+        className="container mx-auto px-6 relative z-10"
+        style={{ opacity, y }}
+      >
         <SectionTitle title="Contact" />
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="bg-zinc-900/50 rounded-2xl shadow-xl shadow-teal-500/10 p-8 border border-teal-500/20 backdrop-blur-sm transform transition-all hover:scale-105 duration-300">
+          <motion.div 
+            className="bg-zinc-900/50 rounded-2xl shadow-xl shadow-teal-500/10 p-8 border border-teal-500/20 backdrop-blur-sm transform transition-all hover:scale-105 duration-300"
+            initial="hidden"
+            variants={staggerChildrenVariants}
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            custom={1}
+            whileHover={{ scale: 1.03 }}
+            transition={{ type: "spring", stiffness: 300, damping: 10 }}
+          >
             <h3 className="text-2xl font-orbitron font-bold mb-6">
               <GradientText>Get In Touch</GradientText>
             </h3>
@@ -71,9 +134,15 @@ export const Contact: React.FC = () => {
               Have a question or want to work together? Leave your details and I'll get back to you as soon as possible.
             </p>
             
-            <div className="bg-gradient-to-br from-zinc-900 to-zinc-800 p-6 rounded-xl border border-teal-500/10">
+            <motion.div 
+              className="bg-gradient-to-br from-zinc-900 to-zinc-800 p-6 rounded-xl border border-teal-500/10"
+              variants={itemVariants}
+            >
               <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4">
-                <div className="form-group">
+                <motion.div 
+                  className="form-group"
+                  variants={itemVariants}
+                >
                   <input
                     type="text"
                     placeholder="Name"
@@ -81,11 +150,21 @@ export const Contact: React.FC = () => {
                     {...register("name")}
                   />
                   {errors.name && (
-                    <p className="text-red-500 text-sm mt-1 font-orbitron">{errors.name.message}</p>
+                    <motion.p 
+                      className="text-red-500 text-sm mt-1 font-orbitron"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      {errors.name.message}
+                    </motion.p>
                   )}
-                </div>
+                </motion.div>
                 
-                <div className="form-group">
+                <motion.div 
+                  className="form-group"
+                  variants={itemVariants}
+                >
                   <input
                     type="email"
                     placeholder="Email"
@@ -93,11 +172,21 @@ export const Contact: React.FC = () => {
                     {...register("email")}
                   />
                   {errors.email && (
-                    <p className="text-red-500 text-sm mt-1 font-orbitron">{errors.email.message}</p>
+                    <motion.p 
+                      className="text-red-500 text-sm mt-1 font-orbitron"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      {errors.email.message}
+                    </motion.p>
                   )}
-                </div>
+                </motion.div>
                 
-                <div className="form-group">
+                <motion.div 
+                  className="form-group"
+                  variants={itemVariants}
+                >
                   <textarea
                     placeholder="Message"
                     rows={5}
@@ -105,80 +194,161 @@ export const Contact: React.FC = () => {
                     {...register("message")}
                   />
                   {errors.message && (
-                    <p className="text-red-500 text-sm mt-1 font-orbitron">{errors.message.message}</p>
+                    <motion.p 
+                      className="text-red-500 text-sm mt-1 font-orbitron"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      {errors.message.message}
+                    </motion.p>
                   )}
-                </div>
+                </motion.div>
                 
-                <div className="flex justify-end">
+                <motion.div 
+                  className="flex justify-end"
+                  variants={itemVariants}
+                  whileHover={{ scale: 1.05 }}
+                >
                   <Button type="submit" disabled={isSubmitting}>
-                    {isSubmitting ? "Sending..." : "Submit"}
+                    {isSubmitting ? (
+                      <motion.span
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                        className="inline-block"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+                        </svg>
+                      </motion.span>
+                    ) : (
+                      "Submit"
+                    )}
                   </Button>
-                </div>
+                </motion.div>
               </form>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
           
-          <div className="bg-zinc-900/50 rounded-2xl shadow-xl shadow-teal-500/10 p-8 border border-teal-500/20 backdrop-blur-sm transform transition-all hover:scale-105 duration-300">
+          <motion.div 
+            className="bg-zinc-900/50 rounded-2xl shadow-xl shadow-teal-500/10 p-8 border border-teal-500/20 backdrop-blur-sm transform transition-all hover:scale-105 duration-300"
+            initial="hidden"
+            variants={staggerChildrenVariants}
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            custom={2}
+            whileHover={{ scale: 1.03 }}
+            transition={{ type: "spring", stiffness: 300, damping: 10 }}
+          >
             <h3 className="text-2xl font-orbitron font-bold mb-6">
               <GradientText>Connect With Me</GradientText>
             </h3>
             
-            <div className="bg-gradient-to-br from-zinc-900 to-zinc-800 p-6 rounded-xl border border-teal-500/10">
+            <motion.div 
+              className="bg-gradient-to-br from-zinc-900 to-zinc-800 p-6 rounded-xl border border-teal-500/10"
+              variants={itemVariants}
+            >
               <div className="space-y-4">
-                <div className="flex items-center space-x-4">
-                  <div className="w-10 h-10 flex items-center justify-center bg-zinc-800 rounded-full text-xl shadow-md border text-teal-400 shadow-teal-500/10 border-teal-500/20">
+                <motion.div 
+                  className="flex items-center space-x-4"
+                  variants={itemVariants}
+                  whileHover={{ x: 5 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                >
+                  <motion.div 
+                    className="w-10 h-10 flex items-center justify-center bg-zinc-800 rounded-full text-xl shadow-md border text-teal-400 shadow-teal-500/10 border-teal-500/20"
+                    whileHover={{ scale: 1.2, rotate: 5 }}
+                    transition={{ type: "spring", stiffness: 500, damping: 10 }}
+                  >
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                       <polyline points="22,6 12,13 2,6"></polyline>
                     </svg>
-                  </div>
+                  </motion.div>
                   <div>
                     <h4 className="text-sm font-orbitron text-gray-300">Email</h4>
-                    <a href="mailto:contact@example.com" className="text-teal-400 hover:text-teal-300 transition-colors duration-200 text-sm">
+                    <motion.a 
+                      href="mailto:contact@example.com" 
+                      className="text-teal-400 hover:text-teal-300 transition-colors duration-200 text-sm"
+                      whileHover={{ scale: 1.05, color: "#5eead4" }}
+                    >
                       contact@example.com
-                    </a>
+                    </motion.a>
                   </div>
-                </div>
+                </motion.div>
                 
-                <div className="flex items-center space-x-4">
-                  <div className="w-10 h-10 flex items-center justify-center bg-zinc-800 rounded-full text-xl shadow-md border text-teal-400 shadow-teal-500/10 border-teal-500/20">
+                <motion.div 
+                  className="flex items-center space-x-4"
+                  variants={itemVariants}
+                  whileHover={{ x: 5 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                >
+                  <motion.div 
+                    className="w-10 h-10 flex items-center justify-center bg-zinc-800 rounded-full text-xl shadow-md border text-teal-400 shadow-teal-500/10 border-teal-500/20"
+                    whileHover={{ scale: 1.2, rotate: 5 }}
+                    transition={{ type: "spring", stiffness: 500, damping: 10 }}
+                  >
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
                     </svg>
-                  </div>
+                  </motion.div>
                   <div>
                     <h4 className="text-sm font-orbitron text-gray-300">GitHub</h4>
-                    <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-teal-400 hover:text-teal-300 transition-colors duration-200 text-sm">
+                    <motion.a 
+                      href="https://github.com" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="text-teal-400 hover:text-teal-300 transition-colors duration-200 text-sm"
+                      whileHover={{ scale: 1.05, color: "#5eead4" }}
+                    >
                       github.com/username
-                    </a>
+                    </motion.a>
                   </div>
-                </div>
+                </motion.div>
                 
-                <div className="flex items-center space-x-4">
-                  <div className="w-10 h-10 flex items-center justify-center bg-zinc-800 rounded-full text-xl shadow-md border text-teal-400 shadow-teal-500/10 border-teal-500/20">
+                <motion.div 
+                  className="flex items-center space-x-4"
+                  variants={itemVariants}
+                  whileHover={{ x: 5 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                >
+                  <motion.div 
+                    className="w-10 h-10 flex items-center justify-center bg-zinc-800 rounded-full text-xl shadow-md border text-teal-400 shadow-teal-500/10 border-teal-500/20"
+                    whileHover={{ scale: 1.2, rotate: 5 }}
+                    transition={{ type: "spring", stiffness: 500, damping: 10 }}
+                  >
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
                       <rect x="2" y="9" width="4" height="12"></rect>
                       <circle cx="4" cy="4" r="2"></circle>
                     </svg>
-                  </div>
+                  </motion.div>
                   <div>
                     <h4 className="text-sm font-orbitron text-gray-300">LinkedIn</h4>
-                    <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-teal-400 hover:text-teal-300 transition-colors duration-200 text-sm">
+                    <motion.a 
+                      href="https://linkedin.com" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="text-teal-400 hover:text-teal-300 transition-colors duration-200 text-sm"
+                      whileHover={{ scale: 1.05, color: "#5eead4" }}
+                    >
                       linkedin.com/in/username
-                    </a>
+                    </motion.a>
                   </div>
-                </div>
+                </motion.div>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
       
       <div className="flex justify-center mt-16">
-        <a 
+        <motion.a 
           href="#" 
           className="bg-teal-500 w-12 h-12 flex items-center justify-center rounded-sm hover:bg-red-600 transition-colors"
+          whileHover={{ scale: 1.1, backgroundColor: "#ef4444" }}
+          whileTap={{ scale: 0.9 }}
+          style={{ opacity: useTransform(scrollYProgress, [0, 0.5, 1], [0, 1, 1]) }}
         >
           <svg 
             xmlns="http://www.w3.org/2000/svg" 
@@ -194,7 +364,7 @@ export const Contact: React.FC = () => {
           >
             <path d="M18 15l-6-6-6 6"/>
           </svg>
-        </a>
+        </motion.a>
       </div>
     </section>
   );

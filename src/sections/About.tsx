@@ -6,7 +6,7 @@ import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { useRef } from 'react';
 import Profile from "../assets/image.jpg";
 import { SectionTitle } from '../components/SectionTitle';
-import { Button } from '../components/Button';
+
 
 interface TechItem {
   name: string;
@@ -71,7 +71,6 @@ const TechIcon: React.FC<TechIconProps> = ({ tech, index, scrollYProgress }) => 
     red: "text-red-400 shadow-red-500/10 border-red-500/20"
   };
 
-  // Create a delayed progress for staggered animations
   const delayedProgress = useTransform(
     scrollYProgress, 
     [0, 0.4], 
@@ -126,14 +125,11 @@ export const About: React.FC = () => {
   const para2Opacity = useTransform(smoothProgress, [0.3, 0.5], [0, 1]);
   const para2Y = useTransform(smoothProgress, [0.3, 0.5], [20, 0]);
   
-  const buttonOpacity = useTransform(smoothProgress, [0.4, 0.6], [0, 1]);
-  const buttonY = useTransform(smoothProgress, [0.4, 0.6], [20, 0]);
-  
   const techContainerOpacity = useTransform(smoothProgress, [0.2, 0.4], [0, 1]);
   const techContainerScale = useTransform(smoothProgress, [0.2, 0.4], [0.95, 1]);
 
   return (
-    <section id="about" ref={sectionRef} className="py-20 bg-zinc-950">
+    <section id="about" ref={sectionRef} className="py-20">
       <div className="container mx-auto px-6">
         <SectionTitle title="About" />
         
@@ -173,14 +169,6 @@ export const About: React.FC = () => {
                 When I'm not coding, you can find me reading books, playing games/basketball or just learning and improving myself in general. I believe in continuous learning and keeping up with 
                 the latest tech trends to deliver modern solutions.
               </motion.p>
-              
-              <motion.div 
-                className="mt-8 flex space-x-4 justify-center"
-                style={{ opacity: buttonOpacity, y: buttonY }}
-                whileHover={{ scale: 1.05 }}
-              >
-                <Button>Contact</Button>
-              </motion.div>
             </div>
           </div>
           

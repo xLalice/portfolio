@@ -9,7 +9,7 @@ import { LazyMotion, domAnimation } from "framer-motion";
 export const Home = () => {
   return (
     <LazyMotion features={domAnimation}>
-      <div className="w-full bg-zinc-950 text-sky-100 scrollbar-thin scrollbar-webkit">
+      <div className="w-full text-sky-100 scrollbar-thin scrollbar-webkit">
         <Navbar />
         <Header />
         <About />

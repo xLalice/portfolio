@@ -18,11 +18,11 @@ export const Header = () => {
   return (
     <motion.div
       ref={ref}
-      className="min-h-screen border-box flex flex-col justify-center items-center bg-zinc-950 relative"
+      className="min-h-screen border-box flex flex-col justify-center items-center relative"
       style={{ opacity }}
     >
       <motion.div 
-        className="text-left w-full max-w-4xl px-6 mt-[-10rem] md:mt-[-5rem]"
+        className="text-left w-full max-w-4xl px-6 mb-20"
         style={{ y: y1, scale }}
       >
         <motion.h3 
@@ -61,7 +61,7 @@ export const Header = () => {
         </motion.h2>
       </motion.div>
       <motion.div 
-        className="mt-20 text-center max-w-2xl px-6 md:px-12"
+        className=" text-center max-w-2xl px-6 md:px-12"
         style={{ y: y2 }}
       >
         <motion.p 
