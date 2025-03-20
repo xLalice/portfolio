@@ -1,1 +1,38 @@
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap");
+
 @import "tailwindcss";
+
+
+@theme {
+  --font-orbitron: "Orbitron", "sans-serif";
+}
+.scrollbar-custom {
+  /* For Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e0 #edf2f7; /* thumb and track (light mode) */
+}
+/* For WebKit browsers */
+.scrollbar-custom::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.scrollbar-custom::-webkit-scrollbar-track {
+  background: gray;
+}
+.scrollbar-custom::-webkit-scrollbar-thumb {
+  background-color: #cbd5e0;
+  border-radius: 10px;
+  border: 2px solid #edf2f7;
+}
+
+/* Dark mode styles */
+.dark .scrollbar-custom {
+  scrollbar-color: #718096 #2d3748; /* thumb and track (dark mode) */
+}
+.dark .scrollbar-custom::-webkit-scrollbar-track {
+  background: black;
+}
+.dark .scrollbar-custom::-webkit-scrollbar-thumb {
+  background-color: #718096;
+  border: 2px solid #2d3748;
+}
