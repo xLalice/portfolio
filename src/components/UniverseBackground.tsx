@@ -9,7 +9,6 @@ interface Star {
 }
 
 interface UniverseBackgroundProps {
-  // Star appearance
   starColor?: string;
   starCount?: number;
   minStarSize?: number;
@@ -17,25 +16,20 @@ interface UniverseBackgroundProps {
   minOpacity?: number;
   maxOpacity?: number;
   
-  // Movement
   minSpeed?: number;
   maxSpeed?: number;
   direction?: 'up' | 'down' | 'left' | 'right' | 'random';
   
-  // Interaction
   interactionDistance?: number;
   interactionStrength?: number;
   mouseEffect?: 'attract' | 'repel' | 'brighten' | 'none';
   
-  // Background
   backgroundColor?: string;
   
-  // Performance
   enableAnimation?: boolean;
 }
 
 const UniverseBackground: React.FC<UniverseBackgroundProps> = ({
-  // Default values for all props
   starColor = 'rgba(255, 255, 255, {opacity})',
   starCount,
   minStarSize = 0.5,
@@ -58,10 +52,8 @@ const UniverseBackground: React.FC<UniverseBackgroundProps> = ({
   const animationRef = useRef<number>(0);
   const isInitializedRef = useRef<boolean>(false);
 
-  // Initialize stars
   const initStars = (width: number, height: number) => {
     const stars: Star[] = [];
-    // Calculate star count based on screen size if not provided
     const count = starCount || Math.floor((width * height) / 3000);
     
     for (let i = 0; i < count; i++) {
@@ -78,7 +70,6 @@ const UniverseBackground: React.FC<UniverseBackgroundProps> = ({
     isInitializedRef.current = true;
   };
 
-  // Handle window resize
   useEffect(() => {
     const handleResize = () => {
       if (canvasRef.current) {
@@ -88,14 +79,12 @@ const UniverseBackground: React.FC<UniverseBackgroundProps> = ({
         canvasRef.current.height = height;
         setDimensions({ width, height });
         
-        // Only reinitialize stars if dimensions actually change
         if (dimensions.width !== width || dimensions.height !== height || !isInitializedRef.current) {
           initStars(width, height);
         }
       }
     };
 
-    // Initial setup
     handleResize();
     
     window.addEventListener('resize', handleResize);
@@ -105,7 +94,6 @@ const UniverseBackground: React.FC<UniverseBackgroundProps> = ({
     };
   }, [starCount, minStarSize, maxStarSize, minOpacity, maxOpacity, minSpeed, maxSpeed]);
 
-  // Handle mouse movement
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
@@ -118,7 +106,6 @@ const UniverseBackground: React.FC<UniverseBackgroundProps> = ({
     };
   }, []);
 
-  // Animation loop
   useEffect(() => {
     if (!enableAnimation || !isInitializedRef.current) return;
     
@@ -129,34 +116,27 @@ const UniverseBackground: React.FC<UniverseBackgroundProps> = ({
       const ctx = canvas.getContext('2d');
       if (!ctx) return;
       
-      // Clear canvas
       ctx.fillStyle = backgroundColor;
       ctx.fillRect(0, 0, dimensions.width, dimensions.height);
       
-      // Set max interaction distance
       const maxDistance = interactionDistance || 
         Math.sqrt(dimensions.width * dimensions.width + dimensions.height * dimensions.height) / 5;
       
-      // Draw and update stars
       starsRef.current.forEach((star, index) => {
-        // Calculate distance from mouse
         const dx = star.x - mousePosition.x;
         const dy = star.y - mousePosition.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
         
-        // Apply mouse effects
         let dynamicOpacity = star.opacity;
         if (distance < maxDistance && mouseEffect === 'brighten') {
           dynamicOpacity = Math.min(1, star.opacity * (1 + interactionStrength * (maxDistance - distance) / maxDistance));
         }
         
-        // Draw star
         ctx.fillStyle = starColor.replace('{opacity}', dynamicOpacity.toString());
         ctx.beginPath();
         ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
         ctx.fill();
         
-        // Move star based on direction
         let newX = star.x;
         let newY = star.y;
         
@@ -178,12 +158,9 @@ const UniverseBackground: React.FC<UniverseBackgroundProps> = ({
             if (newX > dimensions.width) newX = 0;
             break;
           case 'random':
-            // Instead of generating a new random angle every frame,
-            // we'll calculate a consistent movement pattern using the star's properties
             const angle = (star.size * 100) % (Math.PI * 2);
             newX += Math.cos(angle) * star.speed;
             newY += Math.sin(angle) * star.speed;
-            // Wrap around edges
             if (newX < 0) newX = dimensions.width;
             if (newX > dimensions.width) newX = 0;
             if (newY < 0) newY = dimensions.height;
@@ -194,10 +171,8 @@ const UniverseBackground: React.FC<UniverseBackgroundProps> = ({
         star.x = newX;
         star.y = newY;
         
-        // Apply mouse attraction/repulsion if enabled
         if (distance < maxDistance) {
           if (mouseEffect === 'attract') {
-            // Limit attraction effect to prevent stars from bunching too much
             const moveFactor = Math.min(0.5, (maxDistance - distance) / (maxDistance * 50)) * interactionStrength;
             star.x -= dx * moveFactor;
             star.y -= dy * moveFactor;
@@ -208,7 +183,6 @@ const UniverseBackground: React.FC<UniverseBackgroundProps> = ({
           }
         }
         
-        // Keep stars within bounds
         if (star.x < 0) star.x = 0;
         if (star.x > dimensions.width) star.x = dimensions.width;
         if (star.y < 0) star.y = 0;
