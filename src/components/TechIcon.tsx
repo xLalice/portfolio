@@ -19,7 +19,7 @@ const TechIcon: React.FC<TechIconProps> = ({ tech, index, scrollYProgress }) => 
     [0, 1 - (index * 0.05)]
   );
 
-  const opacity = useTransform(delayedProgress, [0, 0.7], [0, 1]);
+  const opacity = useTransform(delayedProgress, [0, 0.2], [0, 1]);
   const y = useTransform(delayedProgress, [0, 0.7], [20, 0]);
 
   return (
