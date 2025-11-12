@@ -65,7 +65,7 @@ export const Contact: React.FC = () => {
         damping: 10
       }
     }
-  };
+  } as const;;
 
   const staggerChildrenVariants = {
     hidden: { opacity: 0 },

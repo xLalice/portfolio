@@ -35,9 +35,6 @@ export const About: React.FC = () => {
   const para2Opacity = useTransform(smoothProgress, [0.3, 0.5], [0, 1]);
   const para2Y = useTransform(smoothProgress, [0.3, 0.5], [20, 0]);
 
-  const techContainerOpacity = useTransform(smoothProgress, [0.2, 0.4], [0, 1]);
-  const techContainerScale = useTransform(smoothProgress, [0.2, 0.4], [0.95, 1]);
-
   return (
     <section id="about" ref={sectionRef} className="py-20">
       <div className="container mx-auto px-6">
