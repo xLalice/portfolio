@@ -17,6 +17,7 @@ export const Header = () => {
 
   return (
     <motion.div
+    id="header"
       ref={ref}
       className="min-h-screen border-box flex flex-col justify-center items-center relative"
       style={{ opacity }}
@@ -29,7 +30,7 @@ export const Header = () => {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="text-sm md:text-base font-orbitron tracking-wider text-teal-400"
+          className="text-sm md:text-2xl lg:text-10xl font-orbitron tracking-wider text-teal-400"
           style= {{x: x1}}
         >
           Hello, I'm

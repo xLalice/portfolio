@@ -1,5 +1,5 @@
 import React from "react"
-import { GradientText } from "../sections/About"
+import { GradientText } from "./GradientText";
 
 interface SectionTitleProps {
     title: string;

@@ -1,101 +1,12 @@
 import React from 'react';
-import { FaReact, FaNodeJs, FaPython, FaGitAlt } from 'react-icons/fa';
-import { SiExpress, SiTailwindcss, SiJavascript, SiTypescript, SiNextdotjs, SiMongodb, SiPostgresql, SiJest } from 'react-icons/si';
-import { IconType } from 'react-icons';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { useRef } from 'react';
 import Profile from "../assets/image.jpg";
 import { SectionTitle } from '../components/SectionTitle';
+import { GradientText } from '../components/GradientText';
+import { techStack } from '../data/techStack';
+import TechIcon from '../components/TechIcon';
 
-
-interface TechItem {
-  name: string;
-  icon: IconType;
-  color: string;
-}
-
-interface GradientTextProps {
-  children: React.ReactNode;
-  className?: string;
-}
-
-interface TechIconProps {
-  tech: TechItem;
-  index: number;
-  scrollYProgress: any;
-}
-
-const techStack: TechItem[] = [
-  { name: 'JavaScript', icon: SiJavascript, color: 'yellow' },
-  { name: 'Python', icon: FaPython, color: 'blue' },
-  { name: 'TypeScript', icon: SiTypescript, color: 'blue' },
-  { name: 'React.js', icon: FaReact, color: 'cyan' },
-  { name: 'Next.js', icon: SiNextdotjs, color: 'gray' },
-  { name: 'Node.js', icon: FaNodeJs, color: 'green' },
-  { name: 'Express.js', icon: SiExpress, color: 'gray' },
-  { name: 'MongoDB', icon: SiMongodb, color: 'green' },
-  { name: 'PostgreSQL', icon: SiPostgresql, color: 'blue' },
-  { name: 'Tailwind CSS', icon: SiTailwindcss, color: 'teal' },
-  { name: 'Git', icon: FaGitAlt, color: 'red' },
-  { name: 'Jest', icon: SiJest, color: 'red' },
-];
-
-export const GradientText: React.FC<GradientTextProps> = ({ children, className = '' }) => {
-  const textRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: textRef,
-    offset: ["start end", "end start"]
-  });
-  
-  const opacity = useTransform(scrollYProgress, [0, 0.3], [0, 1]);
-
-  return (
-    <motion.span
-      ref={textRef}
-      className={`bg-gradient-to-r from-teal-400 to-blue-500 text-transparent bg-clip-text ${className}`}
-      style={{ opacity }}
-    >
-      {children}
-    </motion.span>
-  );
-};
-
-const TechIcon: React.FC<TechIconProps> = ({ tech, index, scrollYProgress }) => {
-  const colorClasses = {
-    yellow: "text-yellow-400 shadow-yellow-500/10 border-yellow-500/20",
-    blue: "text-blue-400 shadow-blue-500/10 border-blue-500/20",
-    cyan: "text-cyan-400 shadow-cyan-500/10 border-cyan-500/20",
-    gray: "text-gray-400 shadow-gray-500/10 border-gray-500/20",
-    green: "text-green-400 shadow-green-500/10 border-green-500/20",
-    teal: "text-teal-400 shadow-teal-500/10 border-teal-500/20",
-    red: "text-red-400 shadow-red-500/10 border-red-500/20"
-  };
-
-  const delayedProgress = useTransform(
-    scrollYProgress, 
-    [0, 0.4], 
-    [0, 1 - (index * 0.05)]
-  );
-
-  const opacity = useTransform(delayedProgress, [0, 0.7], [0, 1]);
-  const y = useTransform(delayedProgress, [0, 0.7], [20, 0]);
-
-  return (
-    <motion.div 
-      className="flex flex-col items-center"
-      style={{ opacity, y }}
-      whileHover={{ 
-        scale: 1.1,
-        transition: { duration: 0.2 } 
-      }}
-    >
-      <div className={`w-14 h-14 flex items-center justify-center bg-zinc-800 rounded-full text-2xl shadow-md border ${colorClasses[tech.color as keyof typeof colorClasses]}`}>
-        <tech.icon />
-      </div>
-      <span className="mt-2 text-xs font-orbitron text-gray-300">{tech.name}</span>
-    </motion.div>
-  );
-};
 
 export const About: React.FC = () => {
   const sectionRef = useRef(null);
@@ -111,7 +22,6 @@ export const About: React.FC = () => {
     restDelta: 0.001 
   });
   
-  // Transform values for different elements
   const profileOpacity = useTransform(smoothProgress, [0, 0.2], [0, 1]);
   const profileX = useTransform(smoothProgress, [0, 0.2], [-50, 0]);
   const profileRotate = useTransform(smoothProgress, [0, 0.2], [-5, 0]);
@@ -155,7 +65,7 @@ export const About: React.FC = () => {
             
             <div className="max-w-md text-gray-300">
               <motion.p 
-                className="mb-4 font-serif text-sm leading-relaxed"
+                className="mb-4 font-serif text-xl text-justify leading-relaxed"
                 style={{ opacity: para1Opacity, y: para1Y }}
               >
                 I'm a passionate full-stack developer with 1 year of experience building engaging web applications. 
@@ -163,7 +73,7 @@ export const About: React.FC = () => {
                 a deep passion for creating intuitive and efficient digital experiences.
               </motion.p>
               <motion.p 
-                className="font-serif text-sm leading-relaxed"
+                className="font-serif text-xl leading-relaxed"
                 style={{ opacity: para2Opacity, y: para2Y }}
               >
                 When I'm not coding, you can find me reading books, playing games/basketball or just learning and improving myself in general. I believe in continuous learning and keeping up with 
@@ -193,7 +103,7 @@ export const About: React.FC = () => {
             >
               <div className="grid grid-cols-3 gap-6">
                 {techStack.map((tech, index) => (
-                  <TechIcon 
+                  <TechIcon
                     key={index} 
                     tech={tech} 
                     index={index} 
