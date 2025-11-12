@@ -1,4 +1,4 @@
-import UniverseBackground from "./components/Background";
+import UniverseBackground from "./components/UniverseBackground";
 import { Home } from "./pages/Home";
 
 function App() {
@@ -12,7 +12,7 @@ function App() {
         minOpacity={0.2}
         maxOpacity={1.0}
         minSpeed={0.01}
-        maxSpeed={0.06}
+        maxSpeed={0.10}
         direction="down" 
         interactionDistance={100} 
         interactionStrength={.5} 
