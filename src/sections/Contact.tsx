@@ -1,11 +1,13 @@
 import React from "react";
 import { SectionTitle } from "../components/SectionTitle";
-import { GradientText } from "./About";
+import { GradientText } from "../components/GradientText";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from "../components/Button";
 import { motion, useScroll, useTransform } from "framer-motion";
+import { info } from "../data/personalInfo";
+import { Toaster, toast } from "react-hot-toast";
 
 const contactFormSchema = z.object({
   name: z.string().min(3, "Name is required"),
@@ -16,7 +18,7 @@ const contactFormSchema = z.object({
 type ContactFormData = z.infer<typeof contactFormSchema>;
 
 export const Contact: React.FC = () => {
-  const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm<ContactFormData>({
+  const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<ContactFormData>({
     resolver: zodResolver(contactFormSchema)
   });
 
@@ -31,23 +33,27 @@ export const Contact: React.FC = () => {
 
   const onSubmit = async (data: ContactFormData) => {
     try {
-      // Replace with your actual form submission logic
-      console.log(data);
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Reset form on successful submission
-      reset();
-      
-      // Show success message (you could implement a toast notification here)
-      alert("Message sent successfully!");
+      const response = await fetch(import.meta.env.VITE_FORMSPREE_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(data)
+      });
+
+      if (response.ok) {
+        toast.success("Message sent successfully!");
+        reset(); 
+      } else {
+        throw new Error("Failed to send message.");
+      }
     } catch (error) {
       console.error("Error submitting form:", error);
+      toast.error("There was an error. Please try again.");
     }
   };
 
-  // Animation variants for child elements
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
     visible: {
@@ -93,6 +99,7 @@ export const Contact: React.FC = () => {
 
   return (
     <section id="contact" className="py-20 relative" ref={sectionRef}>
+      <Toaster position="top-center" reverseOrder={false} />
       <div className="absolute inset-0 overflow-hidden">
         {Array.from({ length: 20 }).map((_, index) => (
           <motion.div
@@ -268,11 +275,11 @@ export const Contact: React.FC = () => {
                   <div>
                     <h4 className="text-sm font-orbitron text-gray-300">Email</h4>
                     <motion.a 
-                      href="mailto:contact@example.com" 
+                      href={`mailto:${info.email}`}
                       className="text-teal-400 hover:text-teal-300 transition-colors duration-200 text-sm"
                       whileHover={{ scale: 1.05, color: "#5eead4" }}
                     >
-                      contact@example.com
+                      {info.email}
                     </motion.a>
                   </div>
                 </motion.div>
@@ -295,13 +302,13 @@ export const Contact: React.FC = () => {
                   <div>
                     <h4 className="text-sm font-orbitron text-gray-300">GitHub</h4>
                     <motion.a 
-                      href="https://github.com" 
+                      href={info.github} 
                       target="_blank" 
                       rel="noopener noreferrer" 
                       className="text-teal-400 hover:text-teal-300 transition-colors duration-200 text-sm"
                       whileHover={{ scale: 1.05, color: "#5eead4" }}
                     >
-                      github.com/username
+                      info.github
                     </motion.a>
                   </div>
                 </motion.div>
@@ -326,13 +333,13 @@ export const Contact: React.FC = () => {
                   <div>
                     <h4 className="text-sm font-orbitron text-gray-300">LinkedIn</h4>
                     <motion.a 
-                      href="https://linkedin.com" 
+                      href={info.linkedin}
                       target="_blank" 
                       rel="noopener noreferrer" 
                       className="text-teal-400 hover:text-teal-300 transition-colors duration-200 text-sm"
                       whileHover={{ scale: 1.05, color: "#5eead4" }}
                     >
-                      linkedin.com/in/username
+                      {info.linkedin}
                     </motion.a>
                   </div>
                 </motion.div>
