@@ -86,12 +86,12 @@ export const Contact: React.FC = () => {
         y: {
           repeat: Infinity,
           duration: 3 + i * 0.5,
-          ease: "easeInOut"
+          ease: "easeInOut" as const
         },
         opacity: {
           repeat: Infinity,
           duration: 3 + i * 0.5,
-          ease: "easeInOut"
+          ease: "easeInOut" as const
         }
       }
     })
