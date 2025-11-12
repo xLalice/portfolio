@@ -308,7 +308,7 @@ export const Contact: React.FC = () => {
                       className="text-teal-400 hover:text-teal-300 transition-colors duration-200 text-sm"
                       whileHover={{ scale: 1.05, color: "#5eead4" }}
                     >
-                      info.github
+                      {info.github}
                     </motion.a>
                   </div>
                 </motion.div>
