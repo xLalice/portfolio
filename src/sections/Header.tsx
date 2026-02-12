@@ -2,7 +2,6 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { SocialIcon } from "../components/SocialIcon";
 import { info } from "../data/personalInfo";
-import { useIsMobile } from "../hooks/isMobile";
 
 export const Header = () => {
   const ref = useRef(null);
@@ -11,20 +10,16 @@ export const Header = () => {
     offset: ["start start", "end start"]
   });
 
-  const isMobile = useIsMobile();
-
   const y1 = useTransform(scrollYProgress, [0, 1], [0, -100]);
   const y2 = useTransform(scrollYProgress, [0, 1], [0, -200]);
-  const x1 = useTransform(scrollYProgress, [0, 1], [0, -150]);
-  const x2 = useTransform(scrollYProgress, [0, 1], [0, 150]);
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.9]);
+  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.95]);
 
   return (
     <motion.section
       id="home"
       ref={ref}
-      className="min-h-screen border-box flex flex-col justify-center items-center relative overflow-hidden"
+      className="min-h-screen box-border flex flex-col justify-center items-center relative overflow-hidden will-change-transform"
       style={{ opacity }}
     >
       <motion.div
@@ -32,68 +27,68 @@ export const Header = () => {
         style={{ y: y1, scale }}
       >
         <motion.h3
-          initial={{ opacity: isMobile ? 1 : 0, x: -20 }}
+          initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: isMobile ? 0 : 0.2 }}
+          transition={{ duration: 0.5, delay: 0 }}
           className="text-lg md:text-2xl font-orbitron tracking-widest text-teal-400 mb-2 pl-1"
-          style={{ x: x1 }}
         >
           Hello, I'm
         </motion.h3>
 
         <motion.h1
-          initial={{ opacity: isMobile ? 1 : 0, x: -50 }}
+          initial={{ opacity: 0, x: -30 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: isMobile ? 0 : 0.4 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
           className="text-5xl md:text-7xl lg:text-8xl font-orbitron font-extrabold uppercase bg-gradient-to-r from-teal-400 to-blue-500 text-transparent bg-clip-text leading-tight"
         >
           John Lorenz
         </motion.h1>
 
         <motion.h1
-          initial={{ opacity: isMobile ? 1 : 0, x: 50 }}
+          initial={{ opacity: 0, x: 30 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: isMobile ? 0 : 0.6 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
           className="text-right text-5xl md:text-7xl lg:text-8xl font-orbitron font-extrabold uppercase bg-gradient-to-r from-teal-400 to-blue-500 text-transparent bg-clip-text leading-tight"
         >
           Inocentes
         </motion.h1>
 
         <motion.h2
-          initial={{ opacity: isMobile ? 1 : 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: isMobile ? 0 : 0.8 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
           className="text-right text-xl md:text-3xl font-orbitron font-bold text-teal-100/80 mt-4 tracking-wide"
-          style={{ x: x2 }}
         >
           Fullstack Developer <span className="text-teal-500 mx-2">|</span> React • Node.js • Typescript
         </motion.h2>
       </motion.div>
 
       <motion.div
-        className="flex flex-col sm:flex-row gap-6 items-center justify-center relative z-10"
+        className="flex flex-col items-center justify-center relative z-10 gap-6"
         style={{ y: y2 }}
-        initial={{ opacity: isMobile ? 1 : 0, y: 30 }}
+        initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: isMobile ? 0 : 1.1 }}
+        transition={{ duration: 0.5, delay: 0.5 }}
       >
-        <motion.a
-          href="#projects"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="px-8 py-4 bg-teal-500 text-black font-orbitron font-bold uppercase tracking-wider rounded shadow-[0_0_20px_rgba(45,212,191,0.5)] hover:shadow-[0_0_30px_rgba(45,212,191,0.8)] transition-all"
-        >
-          View Projects
-        </motion.a>
+        <div className="flex flex-col sm:flex-row gap-6">
+          <motion.a
+            href="#projects"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="px-8 py-4 bg-teal-500 text-black font-orbitron font-bold uppercase tracking-wider rounded shadow-[0_0_20px_rgba(45,212,191,0.5)] hover:shadow-[0_0_30px_rgba(45,212,191,0.8)] transition-all text-center"
+          >
+            View Projects
+          </motion.a>
 
-        <motion.a
-          href="#contact"
-          whileHover={{ scale: 1.05, backgroundColor: "rgba(45, 212, 191, 0.1)" }}
-          whileTap={{ scale: 0.95 }}
-          className="px-8 py-4 border border-teal-500 text-teal-400 font-orbitron font-bold uppercase tracking-wider rounded hover:border-teal-400 transition-all"
-        >
-          Contact Me
-        </motion.a>
+          <motion.a
+            href="#contact"
+            whileHover={{ scale: 1.05, backgroundColor: "rgba(45, 212, 191, 0.1)" }}
+            whileTap={{ scale: 0.95 }}
+            className="px-8 py-4 border border-teal-500 text-teal-400 font-orbitron font-bold uppercase tracking-wider rounded hover:border-teal-400 transition-all text-center"
+          >
+            Contact Me
+          </motion.a>
+        </div>
       </motion.div>
 
       <div className="flex gap-6 mt-4">
