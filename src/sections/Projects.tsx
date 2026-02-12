@@ -1,19 +1,14 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef } from "react";
 import { SectionTitle } from "../components/SectionTitle";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { projectsData } from "../data/projects";
 import ProjectCard from "../components/ProjectCard";
+import { useIsMobile } from "../hooks/isMobile";
 
 export const Projects: React.FC = () => {
   const ref = useRef(null);
 
-  const [isMobile, setIsMobile] = useState(false);
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
+  const isMobile = useIsMobile();
 
   const { scrollYProgress } = useScroll({
     target: ref,

@@ -2,6 +2,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { SocialIcon } from "../components/SocialIcon";
 import { info } from "../data/personalInfo";
+import { useIsMobile } from "../hooks/isMobile";
 
 export const Header = () => {
   const ref = useRef(null);
@@ -9,6 +10,8 @@ export const Header = () => {
     target: ref,
     offset: ["start start", "end start"]
   });
+
+  const isMobile = useIsMobile();
 
   const y1 = useTransform(scrollYProgress, [0, 1], [0, -100]);
   const y2 = useTransform(scrollYProgress, [0, 1], [0, -200]);
@@ -29,9 +32,9 @@ export const Header = () => {
         style={{ y: y1, scale }}
       >
         <motion.h3
-          initial={{ opacity: 0, x: -20 }}
+          initial={{ opacity: isMobile ? 1 : 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
+          transition={{ duration: 0.5, delay: isMobile ? 0 : 0.2 }}
           className="text-lg md:text-2xl font-orbitron tracking-widest text-teal-400 mb-2 pl-1"
           style={{ x: x1 }}
         >
@@ -39,27 +42,27 @@ export const Header = () => {
         </motion.h3>
 
         <motion.h1
-          initial={{ opacity: 0, x: -50 }}
+          initial={{ opacity: isMobile ? 1 : 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
+          transition={{ duration: 0.5, delay: isMobile ? 0 : 0.4 }}
           className="text-5xl md:text-7xl lg:text-8xl font-orbitron font-extrabold uppercase bg-gradient-to-r from-teal-400 to-blue-500 text-transparent bg-clip-text leading-tight"
         >
           John Lorenz
         </motion.h1>
 
         <motion.h1
-          initial={{ opacity: 0, x: 50 }}
+          initial={{ opacity: isMobile ? 1 : 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 0.6 }}
+          transition={{ duration: 0.5, delay: isMobile ? 0 : 0.6 }}
           className="text-right text-5xl md:text-7xl lg:text-8xl font-orbitron font-extrabold uppercase bg-gradient-to-r from-teal-400 to-blue-500 text-transparent bg-clip-text leading-tight"
         >
           Inocentes
         </motion.h1>
 
         <motion.h2
-          initial={{ opacity: 0, x: 20 }}
+          initial={{ opacity: isMobile ? 1 : 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 0.8 }}
+          transition={{ duration: 0.5, delay: isMobile ? 0 : 0.8 }}
           className="text-right text-xl md:text-3xl font-orbitron font-bold text-teal-100/80 mt-4 tracking-wide"
           style={{ x: x2 }}
         >
@@ -70,9 +73,9 @@ export const Header = () => {
       <motion.div
         className="flex flex-col sm:flex-row gap-6 items-center justify-center relative z-10"
         style={{ y: y2 }}
-        initial={{ opacity: 0, y: 30 }}
+        initial={{ opacity: isMobile ? 1 : 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 1.1 }}
+        transition={{ duration: 0.5, delay: isMobile ? 0 : 1.1 }}
       >
         <motion.a
           href="#projects"
