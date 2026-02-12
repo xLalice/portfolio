@@ -23,6 +23,8 @@ export interface ProjectData {
   title: string;
   description: string;
   link: string;
+  highlights: string[];
+  demoLink?: string;
   technologies: {
     name: string;
     icon: IconType;
@@ -30,10 +32,3 @@ export interface ProjectData {
   }[];
 }
 
-export interface ProjectCardProps {
-  image: string;
-  title: string;
-  description: string;
-  link: string;
-  technologies: TechItem[];
-}
