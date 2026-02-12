@@ -6,6 +6,8 @@ interface Star {
   size: number;
   opacity: number;
   speed: number;
+  baseX: number; // Added to help with "spring" return logic
+  baseY: number;
 }
 
 interface UniverseBackgroundProps {
@@ -15,22 +17,18 @@ interface UniverseBackgroundProps {
   maxStarSize?: number;
   minOpacity?: number;
   maxOpacity?: number;
-  
   minSpeed?: number;
   maxSpeed?: number;
   direction?: 'up' | 'down' | 'left' | 'right' | 'random';
-  
   interactionDistance?: number;
   interactionStrength?: number;
   mouseEffect?: 'attract' | 'repel' | 'brighten' | 'none';
-  
   backgroundColor?: string;
-  
   enableAnimation?: boolean;
 }
 
 const UniverseBackground: React.FC<UniverseBackgroundProps> = ({
-  starColor = 'rgba(255, 255, 255, {opacity})',
+  starColor = '255, 255, 255',
   starCount,
   minStarSize = 0.5,
   maxStarSize = 2.5,
@@ -46,8 +44,10 @@ const UniverseBackground: React.FC<UniverseBackgroundProps> = ({
   enableAnimation = true,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [dimensions, setDimensions] = useState({ width: window.innerWidth, height: window.innerHeight });
-  const [mousePosition, setMousePosition] = useState({ x: -1000, y: -1000 }); // Start mouse off-screen
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+  
+  const mousePositionRef = useRef({ x: -1000, y: -1000 });
+  
   const starsRef = useRef<Star[]>([]);
   const animationRef = useRef<number>(0);
   const isInitializedRef = useRef<boolean>(false);
@@ -57,9 +57,13 @@ const UniverseBackground: React.FC<UniverseBackgroundProps> = ({
     const count = starCount || Math.floor((width * height) / 3000);
     
     for (let i = 0; i < count; i++) {
+      const x = Math.random() * width;
+      const y = Math.random() * height;
       stars.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
+        x,
+        y,
+        baseX: x, 
+        baseY: y,
         size: Math.random() * (maxStarSize - minStarSize) + minStarSize,
         opacity: Math.random() * (maxOpacity - minOpacity) + minOpacity,
         speed: Math.random() * (maxSpeed - minSpeed) + minSpeed
@@ -75,121 +79,91 @@ const UniverseBackground: React.FC<UniverseBackgroundProps> = ({
       if (canvasRef.current) {
         const width = window.innerWidth;
         const height = window.innerHeight;
-        canvasRef.current.width = width;
-        canvasRef.current.height = height;
-        setDimensions({ width, height });
-        
-        if (dimensions.width !== width || dimensions.height !== height || !isInitializedRef.current) {
-          initStars(width, height);
+        if (width !== dimensions.width || height !== dimensions.height) {
+            canvasRef.current.width = width;
+            canvasRef.current.height = height;
+            setDimensions({ width, height });
+            initStars(width, height);
         }
       }
     };
 
     handleResize();
-    
     window.addEventListener('resize', handleResize);
-    
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, [starCount, minStarSize, maxStarSize, minOpacity, maxOpacity, minSpeed, maxSpeed]);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [starCount, maxStarSize, minSpeed]); 
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
+        mousePositionRef.current = { x: e.clientX, y: e.clientY };
     };
-
     window.addEventListener('mousemove', handleMouseMove);
-    
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-    };
+    return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
   useEffect(() => {
     if (!enableAnimation || !isInitializedRef.current) return;
     
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d', { alpha: false }); 
+    if (!ctx) return;
+
     const animate = () => {
-      const canvas = canvasRef.current;
-      if (!canvas) return;
-      
-      const ctx = canvas.getContext('2d');
-      if (!ctx) return;
-      
       ctx.fillStyle = backgroundColor;
       ctx.fillRect(0, 0, dimensions.width, dimensions.height);
       
-      const maxDistance = interactionDistance || 
-        Math.sqrt(dimensions.width * dimensions.width + dimensions.height * dimensions.height) / 5;
+      const maxDistance = interactionDistance || 150;
+      const mouseX = mousePositionRef.current.x;
+      const mouseY = mousePositionRef.current.y;
       
-      starsRef.current.forEach((star, index) => {
-        const dx = star.x - mousePosition.x;
-        const dy = star.y - mousePosition.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
+      
+      for (let i = 0; i < starsRef.current.length; i++) {
+        const star = starsRef.current[i];
         
-        let dynamicOpacity = star.opacity;
-        if (distance < maxDistance && mouseEffect === 'brighten') {
-          dynamicOpacity = Math.min(1, star.opacity * (1 + interactionStrength * (maxDistance - distance) / maxDistance));
-        }
-        
-        ctx.fillStyle = starColor.replace('{opacity}', dynamicOpacity.toString());
-        ctx.beginPath();
-        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
-        ctx.fill();
-        
-        let newX = star.x;
-        let newY = star.y;
+        let moveX = 0;
+        let moveY = 0;
         
         switch (direction) {
-          case 'up':
-            newY -= star.speed;
-            if (newY < 0) newY = dimensions.height;
-            break;
-          case 'down':
-            newY += star.speed;
-            if (newY > dimensions.height) newY = 0;
-            break;
-          case 'left':
-            newX -= star.speed;
-            if (newX < 0) newX = dimensions.width;
-            break;
-          case 'right':
-            newX += star.speed;
-            if (newX > dimensions.width) newX = 0;
-            break;
-          case 'random':
-            const angle = (star.size * 100) % (Math.PI * 2);
-            newX += Math.cos(angle) * star.speed;
-            newY += Math.sin(angle) * star.speed;
-            if (newX < 0) newX = dimensions.width;
-            if (newX > dimensions.width) newX = 0;
-            if (newY < 0) newY = dimensions.height;
-            if (newY > dimensions.height) newY = 0;
-            break;
+            case 'up': moveY = -star.speed; break;
+            case 'down': moveY = star.speed; break;
+            case 'left': moveX = -star.speed; break;
+            case 'right': moveX = star.speed; break;
         }
-        
-        star.x = newX;
-        star.y = newY;
+
+        star.x += moveX;
+        star.y += moveY;
+
+        if (star.x < 0) star.x = dimensions.width;
+        if (star.x > dimensions.width) star.x = 0;
+        if (star.y < 0) star.y = dimensions.height;
+        if (star.y > dimensions.height) star.y = 0;
+
+        const dx = mouseX - star.x;
+        const dy = mouseY - star.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        let dynamicOpacity = star.opacity;
         
         if (distance < maxDistance) {
-          if (mouseEffect === 'attract') {
-            const moveFactor = Math.min(0.5, (maxDistance - distance) / (maxDistance * 50)) * interactionStrength;
-            star.x -= dx * moveFactor;
-            star.y -= dy * moveFactor;
-          } else if (mouseEffect === 'repel') {
-            const moveFactor = (maxDistance - distance) / (maxDistance * 50) * interactionStrength;
-            star.x += dx * moveFactor;
-            star.y += dy * moveFactor;
-          }
+            const force = (maxDistance - distance) / maxDistance; 
+            
+            if (mouseEffect === 'brighten') {
+                dynamicOpacity = Math.min(1, star.opacity + force);
+            } else if (mouseEffect === 'attract') {
+                star.x += (dx / distance) * force * interactionStrength;
+                star.y += (dy / distance) * force * interactionStrength;
+            } else if (mouseEffect === 'repel') {
+                star.x -= (dx / distance) * force * interactionStrength;
+                star.y -= (dy / distance) * force * interactionStrength;
+            }
         }
-        
-        if (star.x < 0) star.x = 0;
-        if (star.x > dimensions.width) star.x = dimensions.width;
-        if (star.y < 0) star.y = 0;
-        if (star.y > dimensions.height) star.y = dimensions.height;
-        
-        starsRef.current[index] = star;
-      });
+
+        ctx.fillStyle = `rgba(${starColor}, ${dynamicOpacity})`;
+        ctx.beginPath();
+        ctx.rect(star.x, star.y, star.size, star.size);
+        ctx.fill();
+      }
       
       animationRef.current = requestAnimationFrame(animate);
     };
@@ -201,24 +175,19 @@ const UniverseBackground: React.FC<UniverseBackgroundProps> = ({
     };
   }, [
     dimensions, 
-    mousePosition, 
     backgroundColor, 
     starColor, 
     direction, 
     interactionDistance, 
     interactionStrength, 
     mouseEffect, 
-    enableAnimation,
-    minSpeed,
-    maxSpeed
+    enableAnimation
   ]);
 
   return (
     <canvas 
       ref={canvasRef}
-      className="fixed top-0 left-0 w-full h-full -z-10"
-      width={dimensions.width}
-      height={dimensions.height}
+      className="fixed top-0 left-0 w-full h-full -z-10 pointer-events-none" 
     />
   );
 };
