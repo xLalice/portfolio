@@ -4,7 +4,7 @@ import { useRef } from 'react';
 import Profile from "../assets/image.jpg";
 import { SectionTitle } from '../components/SectionTitle';
 import { GradientText } from '../components/GradientText';
-import { techStack } from '../data/techStack';
+import { techCategories } from '../data/techStack';
 import TechIcon from '../components/TechIcon';
 
 
@@ -65,16 +65,15 @@ export const About: React.FC = () => {
                 className="mb-4 font-serif text-xl text-justify leading-relaxed"
                 style={{ opacity: para1Opacity, y: para1Y }}
               >
-                I'm a passionate full-stack developer with 1 year of experience building engaging web applications.
-                My journey in web development started with a curiosity about how websites work, and evolved into
-                a deep passion for creating intuitive and efficient digital experiences.
+                I am a Fullstack Developer focused on performance and scalability. I specialize in building React applications backed by Node.js and PostgreSQL. Currently, I'm exploring cloud architecture to optimize application deployment.
+
               </motion.p>
               <motion.p
                 className="font-serif text-xl leading-relaxed"
                 style={{ opacity: para2Opacity, y: para2Y }}
               >
-                When I'm not coding, you can find me reading books, playing games/basketball or just learning and improving myself in general. I believe in continuous learning and keeping up with
-                the latest tech trends to deliver modern solutions.
+                
+                When I'm not coding, learning a new tech or debugging, I'm on the basketball court or reading an Agatha Christie book.
               </motion.p>
             </div>
           </div>
@@ -94,14 +93,24 @@ export const About: React.FC = () => {
             <div
               className="bg-gradient-to-br from-zinc-900 to-zinc-800 p-6 rounded-xl border border-teal-500/10"
             >
-              <div className="grid grid-cols-3 gap-6">
-                {techStack.map((tech, index) => (
-                  <TechIcon
-                    key={index}
-                    tech={tech}
-                    index={index}
-                    scrollYProgress={smoothProgress}
-                  />
+              <div className="grid grid-cols-1 gap-6">
+                {techCategories.map((category, index) => (
+                  <div key={index} className="w-full bg-zinc-800/50 p-6 rounded-xl border border-teal-500/10 hover:border-teal-500/30 transition-colors">
+
+                    <h3 className="text-xl font-orbitron text-teal-400 mb-4 border-b border-zinc-700 pb-2 ">
+                      {category.title}
+                    </h3>
+
+                    <div className="flex flex-wrap gap-4 ">
+                      {category.items.map((item, itemIndex) => (
+                        <TechIcon
+                          key={itemIndex}
+                          tech={item}
+                          index={itemIndex}
+                        />
+                      ))}
+                    </div>
+                  </div>
                 ))}
               </div>
             </div>
