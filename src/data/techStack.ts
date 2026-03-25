@@ -5,8 +5,9 @@ import {
 import { 
   SiExpress, SiTailwindcss, SiJavascript, SiTypescript, SiNextdotjs, 
   SiMongodb, SiPostgresql, SiJest, SiReactquery, SiPrisma, SiSwagger, 
-  SiGooglemaps
+  SiGooglemaps, SiRedis, SiAnthropic, SiOpenai, SiGooglegemini, SiPuppeteer
 } from 'react-icons/si';
+import { VscAzure } from "react-icons/vsc";
 import { BsClockHistory } from "react-icons/bs"; 
 
 export const tech = {
@@ -30,8 +31,14 @@ export const tech = {
 
   git: { name: 'Git', icon: FaGitAlt, color: '#F05032' },
   jest: { name: 'Jest', icon: SiJest, color: '#C21325' },
-  googleMaps: { name: 'Google Maps', icon: SiGooglemaps, color: '#4285F4' },
+  googleMaps: { name: 'Google Maps', icon: SiGooglemaps, color: '#4285F4' }, 
   twitterApi: { name: 'Twitter API', icon: FaTwitter, color: '#1DA1F2' },
+  bullmq: { name: 'BullMQ / Redis', icon: SiRedis, color: '#DC382D' },
+  openai: { name: 'OpenAI', icon: SiOpenai, color: '#412991' },
+  anthropic: { name: 'Anthropic', icon: SiAnthropic, color: '#7575E3' },
+  gemini: { name: 'Google Gemini', icon: SiGooglegemini, color: '#4285F4' },
+  puppeteer: { name: 'Puppeteer', icon: SiPuppeteer, color: '#40B5A4' },
+  azure: { name: 'Azure Storage', icon: VscAzure, color: '#0078D4' },
 };
 
 export interface TechCategory {

@@ -61,5 +61,31 @@ export const projectsData: ProjectData[] = [
         ],
         link: "https://github.com/xLalice/waldo-frontend",
         technologies: [tech.react, tech.tailwind, tech.mongodb],
+    },
+    {
+        image: "/projects/threads_monitor.jpg",
+        title: "Threads Monitor",
+        description: "An AI-powered multi-workspace platform for scraping Threads content, synthesizing it into high-quality articles using LLMs, and automatically publishing to Threads, Instagram, and X (Twitter).",
+        link: "https://github.com/xLalice/threads-monitor",
+        highlights: [
+            "Multi-Platform Scraping & Publishing: Automated data collection from Threads and cross-posting to Instagram and X.",
+            "LLM Synthesis Engine: Advanced orchestration of Groq, OpenAI, Anthropic, and Gemini for content generation with built-in fallbacks.",
+            "Intelligent Clustering: Uses TF-IDF and NLP techniques to group related social posts into coherent article topics.",
+            "Background Processing: Scalable job architecture using BullMQ and Redis for high-throughput scraping and publishing tasks.",
+            "Workspace Management: Secure multi-tenant architecture with Prisma-backed workspace ownership and custom configuration."
+        ],
+        technologies: [
+            tech.nextjs,
+            tech.typescript,
+            tech.tailwind,
+            tech.prisma,
+            tech.postgresql,
+            tech.bullmq,
+            tech.anthropic,
+            tech.openai,
+            tech.gemini,
+            tech.puppeteer,
+            tech.azure
+        ]
     }
 ];
