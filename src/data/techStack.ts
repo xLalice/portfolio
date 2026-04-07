@@ -5,10 +5,11 @@ import {
 import { 
   SiExpress, SiTailwindcss, SiJavascript, SiTypescript, SiNextdotjs, 
   SiMongodb, SiPostgresql, SiJest, SiReactquery, SiPrisma, SiSwagger, 
-  SiGooglemaps, SiRedis, SiAnthropic, SiOpenai, SiGooglegemini, SiPuppeteer
+  SiGooglemaps, SiRedis, SiAnthropic, SiOpenai, SiGooglegemini, SiPuppeteer,
+  SiDrizzle, SiLangchain
 } from 'react-icons/si';
 import { VscAzure } from "react-icons/vsc";
-import { BsClockHistory } from "react-icons/bs"; 
+import { BsClockHistory, BsRobot } from "react-icons/bs"; 
 
 export const tech = {
   javascript: { name: 'JavaScript', icon: SiJavascript, color: '#F7DF1E' }, 
@@ -39,6 +40,9 @@ export const tech = {
   gemini: { name: 'Google Gemini', icon: SiGooglegemini, color: '#4285F4' },
   puppeteer: { name: 'Puppeteer', icon: SiPuppeteer, color: '#40B5A4' },
   azure: { name: 'Azure Storage', icon: VscAzure, color: '#0078D4' },
+  drizzle: { name: 'Drizzle ORM', icon: SiDrizzle, color: '#C5F74F' },
+  langchain: { name: 'LangGraph', icon: SiLangchain, color: '#1C3C3C' },
+  mastra: { name: 'Mastra', icon: BsRobot, color: '#4A90E2' },
 };
 
 export interface TechCategory {
@@ -53,7 +57,7 @@ export const techCategories: TechCategory[] = [
   },
   {
     title: "Backend & Services",
-    items: [tech.nodejs, tech.express, tech.python, tech.rest, tech.nodeCron]
+    items: [tech.nodejs, tech.express, tech.python, tech.rest, tech.nodeCron, tech.drizzle, tech.langchain, tech.mastra]
   },
   {
     title: "Database",

@@ -3,6 +3,32 @@ import { tech } from "./techStack";
 
 export const projectsData: ProjectData[] = [
     {
+        image: "/projects/ai_factory.png",
+        title: "AI Factory",
+        description: "A high-performance multi-agent orchestration platform that designs, builds, and deploys custom AI agent teams to automate complex business workflows.",
+        highlights: [
+            "Dynamic Agent Orchestration: Implements a Graph-based execution engine (LangGraph) to coordinate specialized agents (CS Bot, PM Bot, Architect) with persistent state.",
+            "Architect Agent: Automated 'zero-to-one' agent team design that parses user goals into DAG workflows and specialized agent instructions.",
+            "Multi-Tenant Workspace Architecture: Secure isolation of threads, approvals, and knowledge bases using Drizzle ORM and PostgreSQL.",
+            "Human-in-the-Loop Approvals: Integrated WhatsApp and web-based approval gates for sensitive tool executions like quote generation and task assignment.",
+            "Cost & Token Monitoring: Real-time tracking of LLM usage across providers (OpenAI, Anthropic, Gemini) with per-workspace budget caps."
+        ],
+        link: "https://github.com/xLalice/ai-factory",
+        technologies: [
+            tech.nextjs,
+            tech.typescript,
+            tech.tailwind,
+            tech.drizzle,
+            tech.postgresql,
+            tech.langchain,
+            tech.openai,
+            tech.anthropic,
+            tech.gemini,
+            tech.mastra,
+            tech.bullmq
+        ],
+    },
+    {
         image: "/projects/control_panel.gif",
         title: "Aicon Control Panel",
         description: "A centralized ERP dashboard managing sales leads, inventory, and employee workflows.",
