@@ -12,28 +12,28 @@ const TechIcon: React.FC<TechIconProps> = ({ tech, index }) => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1 }}
-      whileHover={{ scale: 1.05 }}
-      className="flex flex-col items-center justify-center gap-2 group cursor-pointer"
+      initial={{ opacity: 0, scale: 0.9 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      transition={{ delay: index * 0.05 }}
+      whileHover={{ scale: 1.1 }}
+      className="flex flex-col items-center justify-center gap-3 group cursor-pointer"
     >
       <div
-        className="relative p-4 rounded-xl bg-zinc-800/30 border border-zinc-700/50 overflow-hidden transition-colors duration-300"
+        className="relative p-5 rounded-sm bg-(--color-bg-secondary) border border-(--color-border) overflow-hidden transition-colors duration-300 group-hover:border-(--color-accent)"
       >
         <div
-          className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-300"
+          className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300"
           style={{ backgroundColor: tech.color }}
         />
 
         <Icon
-          size={28}
-          style={{ color: tech.color, filter: `drop-shadow(0 0 2px ${tech.color})` }}
-          className="relative z-10 transition-transform duration-300 group-hover:scale-110"
+          size={32}
+          style={{ color: tech.color }}
+          className="relative z-10"
         />
       </div>
 
-      <span className="text-xs font-orbitron text-zinc-400 group-hover:text-zinc-200 transition-colors">
+      <span className="font-mono text-[10px] uppercase tracking-widest text-(--color-text-dim) group-hover:text-(--color-text-primary) transition-colors">
         {tech.name}
       </span>
     </motion.div>

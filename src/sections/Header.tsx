@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { m, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { SocialIcon } from "../components/SocialIcon";
 import { info } from "../data/personalInfo";
@@ -16,54 +16,54 @@ export const Header = () => {
   const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.95]);
 
   return (
-    <motion.section
+    <m.section
       id="home"
       ref={ref}
       className="min-h-screen box-border flex flex-col justify-center items-center relative overflow-hidden will-change-transform"
       style={{ opacity }}
     >
-      <motion.div
+      <m.div
         className="w-full max-w-5xl px-6 mb-12 relative z-10"
         style={{ y: y1, scale }}
       >
-        <motion.h3
+        <m.h3
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 0 }}
-          className="text-lg md:text-2xl font-orbitron tracking-widest text-teal-400 mb-2 pl-1"
+          className="text-lg md:text-2xl font-orbitron tracking-widest text-(--color-accent) mb-2 pl-1"
         >
           Hello, I'm
-        </motion.h3>
+        </m.h3>
 
-        <motion.h1
+        <m.h1
           initial={{ opacity: 0, x: -30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="text-5xl md:text-7xl lg:text-8xl font-orbitron font-extrabold uppercase bg-gradient-to-r from-teal-400 to-blue-500 text-transparent bg-clip-text leading-tight"
+          className="text-5xl md:text-7xl lg:text-8xl font-orbitron font-black uppercase text-(--color-text-primary) leading-tight"
         >
           John Lorenz
-        </motion.h1>
+        </m.h1>
 
-        <motion.h1
+        <m.h1
           initial={{ opacity: 0, x: 30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="text-right text-5xl md:text-7xl lg:text-8xl font-orbitron font-extrabold uppercase bg-gradient-to-r from-teal-400 to-blue-500 text-transparent bg-clip-text leading-tight"
+          className="text-right text-5xl md:text-7xl lg:text-8xl font-orbitron font-black uppercase text-(--color-accent) leading-tight"
         >
           Inocentes
-        </motion.h1>
+        </m.h1>
 
-        <motion.h2
+        <m.h2
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.3 }}
-          className="text-right text-xl md:text-3xl font-orbitron font-bold text-teal-100/80 mt-4 tracking-wide"
+          className="text-right text-xl md:text-3xl font-orbitron font-bold text-(--color-text-secondary) mt-4 tracking-wide"
         >
-          Fullstack Developer <span className="text-teal-500 mx-2">|</span> React • Node.js • Typescript
-        </motion.h2>
-      </motion.div>
+          Fullstack Developer <span className="text-(--color-accent) mx-2">|</span> React • Node.js • Typescript
+        </m.h2>
+      </m.div>
 
-      <motion.div
+      <m.div
         className="flex flex-col items-center justify-center relative z-10 gap-6"
         style={{ y: y2 }}
         initial={{ opacity: 0, y: 30 }}
@@ -71,25 +71,25 @@ export const Header = () => {
         transition={{ duration: 0.5, delay: 0.5 }}
       >
         <div className="flex flex-col sm:flex-row gap-6">
-          <motion.a
+          <m.a
             href="#projects"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="px-8 py-4 bg-teal-500 text-black font-orbitron font-bold uppercase tracking-wider rounded shadow-[0_0_20px_rgba(45,212,191,0.5)] hover:shadow-[0_0_30px_rgba(45,212,191,0.8)] transition-all text-center"
+            className="px-8 py-4 bg-(--color-text-primary) text-(--color-bg-primary) font-orbitron font-bold uppercase tracking-wider rounded shadow-lg shadow-(--color-accent)/10 hover:bg-(--color-accent) hover:text-(--color-text-primary) transition-all text-center"
           >
             View Projects
-          </motion.a>
+          </m.a>
 
-          <motion.a
+          <m.a
             href="#contact"
             whileHover={{ scale: 1.05, backgroundColor: "rgba(45, 212, 191, 0.1)" }}
             whileTap={{ scale: 0.95 }}
-            className="px-8 py-4 border border-teal-500 text-teal-400 font-orbitron font-bold uppercase tracking-wider rounded hover:border-teal-400 transition-all text-center"
+            className="px-8 py-4 border border-(--color-accent) text-(--color-accent) font-orbitron font-bold uppercase tracking-wider rounded hover:border-(--color-accent-hover) transition-all text-center"
           >
             Contact Me
-          </motion.a>
+          </m.a>
         </div>
-      </motion.div>
+      </m.div>
 
       <div className="flex gap-6 mt-4">
         <SocialIcon href={info.github} label="GitHub">
@@ -110,7 +110,7 @@ export const Header = () => {
       </div>
 
       <Particles />
-    </motion.section>
+    </m.section>
   );
 };
 
@@ -118,9 +118,9 @@ const Particles = () => {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
       {[...Array(15)].map((_, i) => (
-        <motion.div
+        <m.div
           key={i}
-          className="absolute w-1 h-1 md:w-2 md:h-2 rounded-full bg-teal-400/20"
+          className="absolute w-1 h-1 md:w-2 md:h-2 rounded-full bg-(--color-accent)/20"
           initial={{
             x: Math.random() * 100 - 50 + "%",
             y: Math.random() * 100 + "%",

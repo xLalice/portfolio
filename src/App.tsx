@@ -1,5 +1,6 @@
 import React, { Suspense } from "react";
 import { Home } from "./pages/Home";
+const HomeLazy = React.lazy(() => import("./pages/Home"));
 
 const ParticlesBackground = React.lazy(() => import("./components/ParticlesBackground"));
 
@@ -10,7 +11,9 @@ function App() {
         <ParticlesBackground />
       </Suspense>
       
-      <Home />
+      <Suspense fallback={<div className="min-h-screen bg-black" />}>
+        <HomeLazy />
+      </Suspense>
     </>
   );
 }

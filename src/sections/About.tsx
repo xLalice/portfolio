@@ -1,9 +1,8 @@
 import React from 'react';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { m, useScroll, useTransform, useSpring } from 'framer-motion';
 import { useRef } from 'react';
 import Profile from "../assets/image.jpg";
 import { SectionTitle } from '../components/SectionTitle';
-import { GradientText } from '../components/GradientText';
 import { techCategories } from '../data/techStack';
 import TechIcon from '../components/TechIcon';
 
@@ -42,7 +41,7 @@ export const About: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="flex flex-col space-y-8 items-center">
-            <motion.div
+            <m.div
               className="relative"
               style={{
                 opacity: profileOpacity,
@@ -51,53 +50,55 @@ export const About: React.FC = () => {
               }}
               whileHover={{ scale: 1.05 }}
             >
-              <div className="w-64 h-64 rounded-full overflow-hidden border-4 border-teal-500/30 shadow-xl shadow-teal-500/20">
+              <div className="w-64 h-64 rounded-full overflow-hidden border-4 border-(--color-border) shadow-xl shadow-(--color-accent)/10">
                 <img
                   src={Profile}
                   alt="Profile"
                   className="w-full h-full object-cover"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
-            </motion.div>
+            </m.div>
 
-            <div className="max-w-md text-gray-300">
-              <motion.p
-                className="mb-4 font-serif text-xl text-justify leading-relaxed"
+            <div className="max-w-md text-(--color-text-secondary)">
+              <m.p
+                className="mb-4 font-serif text-xl text-left leading-relaxed"
                 style={{ opacity: para1Opacity, y: para1Y }}
               >
                 I am a Fullstack Developer focused on performance and scalability. I specialize in building React applications backed by Node.js and PostgreSQL. Currently, I'm exploring cloud architecture to optimize application deployment.
 
-              </motion.p>
-              <motion.p
-                className="font-serif text-xl leading-relaxed"
+              </m.p>
+              <m.p
+                className="font-serif text-xl leading-relaxed text-(--color-text-dim)"
                 style={{ opacity: para2Opacity, y: para2Y }}
               >
                 
                 When I'm not coding, learning a new tech or debugging, I'm on the basketball court or reading an Agatha Christie book.
-              </motion.p>
+              </m.p>
             </div>
           </div>
 
-          <motion.div
-            className="bg-zinc-900/50 rounded-2xl shadow-xl shadow-teal-500/10 p-8 border border-teal-500/20 backdrop-blur-sm"
+          <m.div
+            className="bg-(--color-bg-secondary)/50 rounded-2xl shadow-xl shadow-(--color-accent)/10 p-8 border border-(--color-border) backdrop-blur-sm"
             style={{ opacity: techStackOpacity, x: techStackX }}
             whileHover={{
               scale: 1.03,
               boxShadow: "0 20px 25px -5px rgba(45, 212, 191, 0.1), 0 10px 10px -5px rgba(45, 212, 191, 0.04)"
             }}
           >
-            <h3 className="text-2xl font-orbitron font-bold mb-6">
-              <GradientText>Tech Stack</GradientText>
+            <h3 className="text-2xl font-orbitron font-bold mb-6 text-(--color-text-primary)">
+              Tech Stack
             </h3>
 
             <div
-              className="bg-gradient-to-br from-zinc-900 to-zinc-800 p-6 rounded-xl border border-teal-500/10"
+              className="bg-gradient-to-br from-(--color-bg-tertiary) to-(--color-bg-secondary) p-6 rounded-xl border border-(--color-border)"
             >
               <div className="grid grid-cols-1 gap-6">
                 {techCategories.map((category, index) => (
-                  <div key={index} className="w-full bg-zinc-800/50 p-6 rounded-xl border border-teal-500/10 hover:border-teal-500/30 transition-colors">
+                  <div key={index} className="w-full bg-(--color-bg-tertiary)/50 p-6 rounded-xl border border-(--color-border) hover:border-(--color-accent)/30 transition-colors">
 
-                    <h3 className="text-xl font-orbitron text-teal-400 mb-4 border-b border-zinc-700 pb-2 ">
+                    <h3 className="text-xl font-orbitron text-(--color-accent) mb-4 border-b border-(--color-border) pb-2 ">
                       {category.title}
                     </h3>
 
@@ -114,7 +115,7 @@ export const About: React.FC = () => {
                 ))}
               </div>
             </div>
-          </motion.div>
+          </m.div>
         </div>
       </div>
     </section>

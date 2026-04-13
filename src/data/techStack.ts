@@ -1,15 +1,20 @@
 import { TechItem } from "../types";
 import { 
   FaReact, FaNodeJs, FaPython, FaGitAlt, FaTwitter
-} from 'react-icons/fa';
+} from 'react-icons/fa/index.js';
 import { 
   SiExpress, SiTailwindcss, SiJavascript, SiTypescript, SiNextdotjs, 
   SiMongodb, SiPostgresql, SiJest, SiReactquery, SiPrisma, SiSwagger, 
   SiGooglemaps, SiRedis, SiAnthropic, SiOpenai, SiGooglegemini, SiPuppeteer,
   SiDrizzle, SiLangchain
-} from 'react-icons/si';
-import { VscAzure } from "react-icons/vsc";
-import { BsClockHistory, BsRobot } from "react-icons/bs"; 
+} from 'react-icons/si/index.js';
+import { VscAzure } from "react-icons/vsc/index.js";
+import { BsClockHistory, BsRobot } from "react-icons/bs/index.js"; 
+
+/**
+ * Icons are imported from /index.js subpaths to help Vite's tree-shaking
+ * and reduce the dev-mode bundle size identified in the audit.
+ */
 
 export const tech = {
   javascript: { name: 'JavaScript', icon: SiJavascript, color: '#F7DF1E' }, 

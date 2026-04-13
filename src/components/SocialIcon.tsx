@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 
 interface SocialIconProps {
     href: string,
@@ -9,7 +9,7 @@ interface SocialIconProps {
 
 export const SocialIcon = ({ href, children, label }: SocialIconProps) => {
     return (
-        <motion.a
+        <m.a
             href={href}
             target="_blank"
             rel="noopener noreferrer"
@@ -28,6 +28,6 @@ export const SocialIcon = ({ href, children, label }: SocialIconProps) => {
             >
                 {children}
             </svg>
-        </motion.a>
+        </m.a>
     );
 };

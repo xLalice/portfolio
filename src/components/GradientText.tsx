@@ -1,23 +1,18 @@
-import { useRef } from "react";
-import { GradientTextProps } from "../types";
-import { useScroll, useTransform, motion } from "framer-motion";
+import React from "react";
 
-export const GradientText: React.FC<GradientTextProps> = ({ children, className = '' }) => {
-  const textRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: textRef,
-    offset: ["start end", "end start"]
-  });
-  
-  const opacity = useTransform(scrollYProgress, [0, 0.3], [0, 1]);
+interface GradientTextProps {
+  children: React.ReactNode;
+  className?: string;
+}
 
+/**
+ * Distilled from gradient to solid high-contrast text.
+ * Part of the "Precise & Professional" aesthetic shift.
+ */
+export const GradientText: React.FC<GradientTextProps> = ({ children, className = "" }) => {
   return (
-    <motion.span
-      ref={textRef}
-      className={`bg-gradient-to-r from-teal-400 to-blue-500 text-transparent bg-clip-text ${className}`}
-      style={{ opacity }}
-    >
+    <span className={`text-teal-400 font-bold tracking-tight ${className}`}>
       {children}
-    </motion.span>
+    </span>
   );
 };

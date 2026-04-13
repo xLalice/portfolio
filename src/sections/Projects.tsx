@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { SectionTitle } from "../components/SectionTitle";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { m, useScroll, useTransform, useSpring } from "framer-motion";
 import { projectsData } from "../data/projects";
 import ProjectCard from "../components/ProjectCard";
 import { useIsMobile } from "../hooks/isMobile";
@@ -34,20 +34,20 @@ export const Projects: React.FC = () => {
 
         <div ref={ref} className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-start">
 
-          <motion.div style={{ y: y1 }} className="space-y-8 lg:space-y-12">
+          <m.div style={{ y: y1 }} className="space-y-8 lg:space-y-12">
             {column1.map((project) => (
               <ProjectCard key={project.title} project={project} />
             ))}
-          </motion.div>
+          </m.div>
 
-          <motion.div
+          <m.div
             style={{ y: y2 }}
             className="space-y-8 lg:space-y-12 md:mt-20"
           >
             {column2.map((project) => (
               <ProjectCard key={project.title} project={project}/>
             ))}
-          </motion.div>
+          </m.div>
 
         </div>
       </div>
