@@ -1,19 +1,20 @@
 import { TechItem } from "../types";
 import { 
   FaReact, FaNodeJs, FaPython, FaGitAlt, FaTwitter
-} from 'react-icons/fa/index.js';
+} from 'react-icons/fa';
 import { 
   SiExpress, SiTailwindcss, SiJavascript, SiTypescript, SiNextdotjs, 
   SiMongodb, SiPostgresql, SiJest, SiReactquery, SiPrisma, SiSwagger, 
   SiGooglemaps, SiRedis, SiAnthropic, SiOpenai, SiGooglegemini, SiPuppeteer,
   SiDrizzle, SiLangchain
-} from 'react-icons/si/index.js';
-import { VscAzure } from "react-icons/vsc/index.js";
-import { BsClockHistory, BsRobot } from "react-icons/bs/index.js"; 
+} from 'react-icons/si';
+import { VscAzure } from "react-icons/vsc";
+import { BsClockHistory, BsRobot } from "react-icons/bs"; 
 
 /**
- * Icons are imported from /index.js subpaths to help Vite's tree-shaking
- * and reduce the dev-mode bundle size identified in the audit.
+ * Icons are imported from standard subpaths. 
+ * Note: Lighthouse scores are best measured against production builds 
+ * (npm run build && npm run preview) rather than the dev server.
  */
 
 export const tech = {

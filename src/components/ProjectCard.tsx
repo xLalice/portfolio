@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "./Button";
 import { GradientText } from "./GradientText";
 import ProjectTechIcon from "./ProjectTechIcon";
-import { FaGithub, FaExternalLinkAlt } from "react-icons/fa/index.js";
+import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
 import { ProjectData} from "../types";
 
 export interface ProjectCardProps {

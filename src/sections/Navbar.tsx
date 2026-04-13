@@ -1,7 +1,7 @@
 import { useMotionValueEvent, useScroll, m, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { Link } from "react-scroll";
-import { FaBars, FaTimes } from "react-icons/fa/index.js";
+import { FaBars, FaTimes } from "react-icons/fa";
 
 const navItems = ["About", "Projects", "Contact"];
 
